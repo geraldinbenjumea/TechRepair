@@ -1,5 +1,6 @@
 package co.edu.uniquindio.poo.model;
 
+import javax.swing.event.CaretListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +11,16 @@ public class OrdenServicio {
     protected String descripcion;
     protected EstadoOrden estado;
     private List <DetalleServicio> listaDetalles= new ArrayList<>();
+    private Cliente propietario;
 
     public OrdenServicio(String codigoUnico, LocalDate fecha, String descripcion, EstadoOrden estado,
-                         List<DetalleServicio> listaDetalles) {
+                         List<DetalleServicio> listaDetalles, Cliente propietario) {
         this.codigoUnico = codigoUnico;
         this.fecha = fecha;
         this.descripcion = descripcion;
         this.estado = estado;
         this.listaDetalles = listaDetalles;
+        this.propietario=propietario;
     }
 
     public String getCodigoUnico() {
@@ -55,8 +58,15 @@ public class OrdenServicio {
     public List<DetalleServicio> getListaDetalles() {
         return listaDetalles;
     }
-
     public void setListaDetalles(List<DetalleServicio> listaDetalles) {
         this.listaDetalles = listaDetalles;
+    }
+
+    public Cliente getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Cliente propietario) {
+        this.propietario = propietario;
     }
 }

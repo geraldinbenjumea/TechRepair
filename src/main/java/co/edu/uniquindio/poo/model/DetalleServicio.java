@@ -9,11 +9,12 @@ public class DetalleServicio {
     private EstadoIntervencion estado;
     private float horas;
     protected String observaciones;
+    protected String fallaReportada;
 
     private OrdenServicio ownedByOrdenServicio;
 
     public DetalleServicio(String codigoDetalle, EquipoTecnologico equipo, String descripcion, Tecnico tecnicoResponsable,
-                           EstadoIntervencion estado, float horas, String observaciones, OrdenServicio ownedByOrdenServicio) {
+                           EstadoIntervencion estado, float horas, String observaciones, OrdenServicio ownedByOrdenServicio, String fallaReportada) {
         this.codigoDetalle = codigoDetalle;
         this.equipo = equipo;
         this.descripcion = descripcion;
@@ -22,6 +23,7 @@ public class DetalleServicio {
         this.horas = horas;
         this.observaciones = observaciones;
         this.ownedByOrdenServicio = ownedByOrdenServicio;
+        this.fallaReportada=fallaReportada;
     }
 
     public String getCodigoDetalle() {
@@ -86,5 +88,13 @@ public class DetalleServicio {
 
     public void setOwnedByOrdenServicio(OrdenServicio ownedByOrdenServicio) {
         this.ownedByOrdenServicio = ownedByOrdenServicio;
+    }
+
+    public String getFallaReportada() {
+        return fallaReportada;
+    }
+
+    public void setFallaReportada(String fallaReportada) {
+        this.fallaReportada = fallaReportada;
     }
 }

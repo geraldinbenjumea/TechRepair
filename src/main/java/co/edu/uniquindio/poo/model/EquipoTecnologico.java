@@ -8,11 +8,11 @@ public abstract class EquipoTecnologico {
     public String añoFabricacion;
     private String estado;
     private float almacenamiento;
-
+    private Cliente propietario;
     private TechPair ownedByTechPair;
 
     public EquipoTecnologico(String codigo, String numeroSerie, String marca, String añoFabricacion,
-                             String estado, TechPair ownedByTechPair, float almacenamiento) {
+                             String estado, TechPair ownedByTechPair, float almacenamiento, Cliente propietario) {
         this.codigo = codigo;
         this.numeroSerie = numeroSerie;
         this.marca = marca;
@@ -20,6 +20,7 @@ public abstract class EquipoTecnologico {
         this.estado = estado;
         this.ownedByTechPair = ownedByTechPair;
         this.almacenamiento = almacenamiento;
+        this.propietario=propietario;
     }
 
     public String getCodigo() {
@@ -78,4 +79,11 @@ public abstract class EquipoTecnologico {
         this.ownedByTechPair = ownedByTechPair;
     }
 
+    public Cliente getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Cliente propietario) {
+        this.propietario = propietario;
+    }
 }

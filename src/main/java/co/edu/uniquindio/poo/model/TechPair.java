@@ -5,6 +5,7 @@ package co.edu.uniquindio.poo.model;
  * 17/10/2026
  */
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,9 +21,11 @@ public class TechPair {
     protected List<Repuesto> listaRepuestos = new ArrayList<>();
     protected List<EquipoTecnologico> listaEquipos = new LinkedList<>();
     protected List<Servicio> listaServicios = new ArrayList<>();
+    protected List<OrdenServicio> listaOrdenes= new ArrayList<>();
 
     public TechPair(String nombre, String ciudad, String departamento, List<Cliente> listaClientes,
-                    List<Tecnico> listaTecnicos, List<Repuesto> listaRepuestos, List<EquipoTecnologico> listaEquipos, List<Servicio> listaServicios) {
+                    List<Tecnico> listaTecnicos, List<Repuesto> listaRepuestos, List<EquipoTecnologico>
+                            listaEquipos, List<Servicio> listaServicios, List<OrdenServicio> listaOrdenes) {
         this.nombre = nombre;
         this.ciudad = ciudad;
         this.departamento = departamento;
@@ -31,6 +34,7 @@ public class TechPair {
         this.listaRepuestos = listaRepuestos;
         this.listaEquipos = listaEquipos;
         this.listaServicios = listaServicios;
+        this.listaOrdenes= listaOrdenes;
     }
 
     public String getNombre() {
@@ -96,6 +100,15 @@ public class TechPair {
     public void setListaServicios(List<Servicio> listaServicios) {
         this.listaServicios = listaServicios;
     }
+
+    public List<OrdenServicio> getListaOrdenes() {
+        return listaOrdenes;
+    }
+
+    public void setListaOrdenes(List<OrdenServicio> listaOrdenes) {
+        this.listaOrdenes = listaOrdenes;
+    }
+
     //                                 ----CRUD Cliente-----
     //registrar
     public String registrarCliente(Cliente cliente) {
@@ -250,6 +263,68 @@ public class TechPair {
         }
         return "El repuesto no se encuentra registrado.";
     }
+    //
+    //FUNCIONALIDADES
+    //1. registrar cliente (esta en el CRUD)
+    //2. registrar equipo asociado a un cliente
+    public String registrarEquipoACliente(String numeroDocumento, EquipoTecnologico nuevoEquipo) {
+        Optional<Cliente> cliente1 = buscarCliente(numeroDocumento);
+        if (cliente1.isEmpty()) {
+            return " El cliente no está registrado.";
+        }
+        Optional<EquipoTecnologico> equipo1 = buscarEquipo(nuevoEquipo.getNumeroSerie());
+        if (equipo1.isPresent()) {
+            return "Ya existe un equipo registrado con ese número de serie";
+        }
+        // Asociar el cliente al equipo y guardar
+        Cliente cliente = cliente1.get();
+        nuevoEquipo.setPropietario(cliente);
+        listaEquipos.add(nuevoEquipo);
+        return "Equipo registrado y asociado exitosamente al cliente " + cliente.getNombreCompleto();
+    }
+    //3. registrar tecnico (esta en el CRUD)
+    //4. Registrar repuesto (esta en el CRUD)
+    //5. crear orden de servicio para un cliente
+    public String crearOrdenServicio(String codigoUnico, String numeroDocumento) {
+        Optional<Cliente> cliente= buscarCliente(numeroDocumento);
+        if (cliente.isEmpty()) {
+            return "El cliente no se encuentra registrado.";
+        }
+        // que no exista una orden con el mismo número
+        Optional<OrdenServicio> ordenOpt = buscarOrdenServicio(codigoUnico);
+        if (ordenOpt.isPresent()) {
+            return "Error: Ya existe una orden registrada con ese número.";
+        }
+        Cliente cliente2 = cliente.get();
+        OrdenServicio nuevaOrden = new OrdenServicio(codigoUnico, LocalDate.now(),"Orden de servicio abierta",
+                EstadoOrden.ABIERTA, new ArrayList<>(), cliente2);
+        listaOrdenes.add(nuevaOrden);
+        return "Orden de servicio creada exitosamente para el cliente con identificacion "+ numeroDocumento;
+    }
+    private Optional<OrdenServicio> buscarOrdenServicio(String codigoUnico) {
+        return listaOrdenes.stream().
+                filter(ordenServicio -> ordenServicio.getCodigoUnico().equals(codigoUnico)).findFirst();
+    }
+    //6. Agregar detalle a una orden
+    public String agregarDetalleOrden (String codigoDetalle, String codigoUnico,String numeroSerie,
+                                       Servicio servicio, String fallaReportada, Tecnico tecnico, float horas){
+        Optional<OrdenServicio> orden1 = buscarOrdenServicio(codigoUnico);
+        if (orden1.isEmpty()) {
+            return "La orden de servicio no existe.";
+        }
+        Optional<EquipoTecnologico> equipo1= buscarEquipo(numeroSerie);
+        if(equipo1.isEmpty()){
+            return "El equipo no existe";
+        }
+        OrdenServicio nuevaOrden= orden1.get();
+        EquipoTecnologico nuevoEquipo= equipo1.get();
+        DetalleServicio nuevoDetalle = new DetalleServicio(codigoDetalle, nuevoEquipo, "Agregando detalle servicio",
+                 tecnico, EstadoIntervencion.EN_PROCESO, horas, "No se han encontrado observaciones",
+                nuevaOrden, fallaReportada);
+        nuevaOrden.getListaDetalles().add(nuevoDetalle);
+        return "El detalle se ha añadido a la orden";
+    }
+    //7.Asignar técnico
 
 
 }
