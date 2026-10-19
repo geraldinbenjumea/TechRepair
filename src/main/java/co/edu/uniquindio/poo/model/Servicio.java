@@ -56,5 +56,5 @@ public abstract class Servicio {
         this.ownedByTechPair = ownedByTechPair;
     }
 
-
+    public abstract double calcularCostoServicio();
 }

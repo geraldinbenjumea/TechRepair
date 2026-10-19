@@ -7,4 +7,5 @@ public class ReparacionCorrectiva extends Servicio{
     public ReparacionCorrectiva(String codigo, String nombre, String descripcion, double tarifaBase, TechPair ownedByTechPair) {
         super(codigo, nombre, descripcion, tarifaBase, ownedByTechPair);
     }
+
 }

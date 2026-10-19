@@ -5,13 +5,13 @@ public class Repuesto {
     protected String codigo;
     private String nombre;
     public String descripcion;
-    public String precioUnitario;
+    public float precioUnitario;
     protected int cantidadDisponible;
     protected String categoriacomp;
 
     private TechPair ownedByTechPair;
 
-    public Repuesto(String codigo, String nombre, String descripcion, String precioUnitario,
+    public Repuesto(String codigo, String nombre, String descripcion, float precioUnitario,
                     int cantidadDisponible, String categoriacomp, TechPair ownedByTechPair) {
         this.codigo = codigo;
         this.nombre = nombre;
@@ -46,11 +46,11 @@ public class Repuesto {
         this.descripcion = descripcion;
     }
 
-    public String getPrecioUnitario() {
+    public float getPrecioUnitario() {
         return precioUnitario;
     }
 
-    public void setPrecioUnitario(String precioUnitario) {
+    public void setPrecioUnitario(float precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
 
@@ -76,5 +76,16 @@ public class Repuesto {
 
     public void setOwnedByTechPair(TechPair ownedByTechPair) {
         this.ownedByTechPair = ownedByTechPair;
+    }
+
+    public String inventarioCritico (int cantidadDisponible) {
+        if (cantidadDisponible < 5) {
+            return "Inventario critico";
+        } else {
+            return "Inventario estable";
+        }
+    }
+    public double calcularSubtotal(int cantidadDisponible, float precioUnitario ){
+        return cantidadDisponible*precioUnitario;
     }
 }

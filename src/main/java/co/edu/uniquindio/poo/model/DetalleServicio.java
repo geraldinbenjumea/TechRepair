@@ -10,11 +10,13 @@ public class DetalleServicio {
     private float horas;
     protected String observaciones;
     protected String fallaReportada;
+    private Servicio servicio;
 
     private OrdenServicio ownedByOrdenServicio;
 
     public DetalleServicio(String codigoDetalle, EquipoTecnologico equipo, String descripcion, Tecnico tecnicoResponsable,
-                           EstadoIntervencion estado, float horas, String observaciones, OrdenServicio ownedByOrdenServicio, String fallaReportada) {
+                           EstadoIntervencion estado, float horas, String observaciones, OrdenServicio ownedByOrdenServicio,
+                           String fallaReportada, Servicio servicio) {
         this.codigoDetalle = codigoDetalle;
         this.equipo = equipo;
         this.descripcion = descripcion;
@@ -24,6 +26,7 @@ public class DetalleServicio {
         this.observaciones = observaciones;
         this.ownedByOrdenServicio = ownedByOrdenServicio;
         this.fallaReportada=fallaReportada;
+        this.servicio=servicio;
     }
 
     public String getCodigoDetalle() {
@@ -89,12 +92,28 @@ public class DetalleServicio {
     public void setOwnedByOrdenServicio(OrdenServicio ownedByOrdenServicio) {
         this.ownedByOrdenServicio = ownedByOrdenServicio;
     }
-
     public String getFallaReportada() {
         return fallaReportada;
     }
 
     public void setFallaReportada(String fallaReportada) {
         this.fallaReportada = fallaReportada;
+    }
+
+    public Servicio getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
+    }
+
+    public double calcularCostoDetalle(Servicio servicio, Repuesto repuesto) {
+        double total = 0.0;
+        if (servicio != null) {
+            total += servicio.calcularCostoServicio();
+        }
+        total += repuesto.calcularSubtotal(repuesto.cantidadDisponible, repuesto.precioUnitario);
+        return total;
     }
 }
