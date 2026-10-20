@@ -88,4 +88,6 @@ public class Repuesto {
     public double calcularSubtotal(int cantidadDisponible, float precioUnitario ){
         return cantidadDisponible*precioUnitario;
     }
+
 }
+
